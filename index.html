@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<title>Invitación</title>
+<script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<style>
+    body {
+        margin: 0;
+        height: 100vh;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        background-color: #ffc0cb;
+        font-family: Arial, sans-serif;
+        overflow: hidden;
+    }
+
+    .container {
+        text-align: center;
+    }
+
+    h1 {
+        font-size: 2.5rem;
+    }
+
+    .btn {
+        padding: 15px 30px;
+        font-size: 18px;
+        margin: 10px;
+        border: none;
+        border-radius: 10px;
+        cursor: pointer;
+        position: relative;
+    }
+
+    #yesBtn {
+        background-color: #4CAF50;
+        color: white;
+        transition: transform 0.3s;
+    }
+
+    #noBtn {
+        background-color: #f44336;
+        color: white;
+        position: absolute;
+    }
+
+    /* Pantalla final */
+    #finalScreen {
+        display: none;
+        text-align: center;
+    }
+
+    #finalScreen h1 {
+        font-size: 3rem;
+        animation: bounce 1s infinite;
+    }
+
+    @keyframes bounce {
+        0%,100% { transform: translateY(0); }
+        50% { transform: translateY(-20px); }
+    }
+    h1 {
+    font-size: 6vw;
+}
+
+.btn {
+    padding: 12px 20px;
+    font-size: 4vw;
+}
+
+@media (min-width: 768px) {
+    h1 {
+        font-size: 2.5rem;
+    }
+
+    .btn {
+        font-size: 18px;
+    }
+}
+</style>
+</head>
+
+<body>
+
+<div class="container" id="mainScreen">
+    <h1>¿Quieres salir a comer conmigo? 🍔💖</h1>
+    <button id="yesBtn" class="btn">Sí</button>
+    <button id="noBtn" class="btn">No</button>
+</div>
+
+<div id="finalScreen">
+    <h1>🎉 ¡Felicidades! 🎉</h1>
+</div>
+
+<audio id="music" src="Los Auténticos Decadentes - Loco (Tu Forma De Ser) (Official Audio).mp3"></audio>
+
+<script>
+let noClicks = 0;
+let scale = 1;
+
+const noBtn = document.getElementById("noBtn");
+const yesBtn = document.getElementById("yesBtn");
+const finalScreen = document.getElementById("finalScreen");
+const mainScreen = document.getElementById("mainScreen");
+const music = document.getElementById("music");
+
+// Posición inicial del botón NO
+moveNoButton();
+
+noBtn.addEventListener("click", () => {
+    noClicks++;
+
+    // Mover botón NO
+    moveNoButton();
+
+    // Agrandar botón SI
+    scale += 0.5;
+    yesBtn.style.transform = `scale(${scale})`;
+
+    if (noClicks >= 5) {
+        yesBtn.style.position = "fixed";
+        yesBtn.style.top = "0";
+        yesBtn.style.left = "0";
+        yesBtn.style.width = "100vw";
+        yesBtn.style.height = "100vh";
+        yesBtn.style.fontSize = "3rem";
+    }
+});
+
+yesBtn.addEventListener("click", () => {
+    mainScreen.style.display = "none";
+    finalScreen.style.display = "block";
+
+    // Música
+    music.play();
+
+    // Confetti 🎉
+    setInterval(() => {
+        confetti({
+            particleCount: 100,
+            spread: 70,
+            origin: { y: 0.6 }
+        });
+    }, 500);
+});
+
+function moveNoButton() {
+    const x = Math.random() * (window.innerWidth - noBtn.offsetWidth);
+    const y = Math.random() * (window.innerHeight - noBtn.offsetHeight);
+
+    noBtn.style.left = x + "px";
+    noBtn.style.top = y + "px";
+}
+</script>
+
+</body>
+</html>
